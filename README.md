@@ -1,5 +1,7 @@
 # Creating a Jenkins Environment
 
+![Jenkins diagram.png](images%2FJenkins%20diagram.png)
+
 ## Step 1: Launch an Instance
 
 Launch a new Instance call it 'tech254-shaluo-jenkins' <br>
@@ -90,7 +92,77 @@ Once installation is successful, restart jenkins
 
 ![Screenshot 2023-10-13 175508.png](images%2FScreenshot%202023-10-13%20175508.png)
 
+Do the same for NodeJS, and Office 365 Connector
 
+
+
+
+
+
+
+## Step 2 (Trigger the Job)
+
+- In the build trigger we only want 'shaluo-CD' to work if the merge is successful
+
+![Screenshot 2023-10-13 132338.png](images_5%2FScreenshot%202023-10-13%20132338.png)
+- We want to only build this project once the merge is successful
+- We also want to use a webhook to Github
+
+## Step 3 (Jenkins SSH)
+
+![Screenshot 2023-10-13 132442.png](images_5%2FScreenshot%202023-10-13%20132442.png)
+- Provide the .pem file so Jenkins can SSH into the VM
+
+## Step 4 (Get Nginx Installed)
+
+
+- Use a build step in 'shaluo-CD' to copy the application code
+- Lets first start with getting Nginx on to our Virtual Machine
+```
+rsync -avz -e "ssh -o StrictHostKeyChecking=no" app ubuntu@54.171.236.179:/home/ubuntu
+ssh -o "StrictHostKeyChecking=no" ubuntu@54.171.236.179 <<EOF
+	sudo apt-get update -y
+    sudo apt-get upgrade -y
+    sudo apt-get install nginx -y
+    sudo systemctl restart nginx
+    sudo systemctl enable nginx
+EOF
+```
+Manually use the 'Build Now' to test if it works
+
+## Step 5 (Copy the app code)
+
+Create a new job called `shaluo-app` <br>
+
+Here we are going to do the app deployment
+
+Build the trigger so this job runs after `shaluo-CD`
+
+Keep everything else the same
+
+- Lets get `node.js`, `npm` and `pm2` installed
+- Change the directory to the app
+- Install `npm` in the app folder
+- Use `pm2` to start the app in the background
+
+```
+ssh -A -o "StrictHostKeyChecking=no" ubuntu@54.171.236.179 <<EOF
+
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt install nodejs -y
+
+sudo npm install pm2 -g
+
+cd app
+
+npm install
+
+pm2 start  app.js
+
+pm2 restart app.js
+```
+
+![Screenshot 2023-10-11 114847.png](images%2FScreenshot%202023-10-11%20114847.png)
 
 
 
