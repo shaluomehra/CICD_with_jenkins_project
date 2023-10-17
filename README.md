@@ -92,10 +92,17 @@ Once installation is successful, restart jenkins
 
 ![Screenshot 2023-10-13 175508.png](images%2FScreenshot%202023-10-13%20175508.png)
 
-Do the same for NodeJS, and Office 365 Connector
+Do the same for NodeJS, and Office 365 Connector <br>
 
+Once done we need to configure NodeJS settings so go on 'Manage Jenkins' then click 'Tools'
 
+![Screenshot 2023-10-17 134751.png](images%2FScreenshot%202023-10-17%20134751.png)
 
+Scroll all the way to the bottom till you see 'NodeJS Installation'
+
+We want the latest version 12, so we select and Save
+
+![Screenshot 2023-10-17 135123.png](images%2FScreenshot%202023-10-17%20135123.png)
 
 
 
@@ -104,13 +111,13 @@ Do the same for NodeJS, and Office 365 Connector
 
 - In the build trigger we only want 'shaluo-CD' to work if the merge is successful
 
-![Screenshot 2023-10-13 132338.png](images_5%2FScreenshot%202023-10-13%20132338.png)
+![Screenshot 2023-10-13 132338.png](images%2FScreenshot%202023-10-13%20132338.png)
 - We want to only build this project once the merge is successful
 - We also want to use a webhook to Github
 
 ## Step 3 (Jenkins SSH)
 
-![Screenshot 2023-10-13 132442.png](images_5%2FScreenshot%202023-10-13%20132442.png)
+![Screenshot 2023-10-13 132442.png](images%2FScreenshot%202023-10-13%20132442.png)
 - Provide the .pem file so Jenkins can SSH into the VM
 
 ## Step 4 (Get Nginx Installed)
